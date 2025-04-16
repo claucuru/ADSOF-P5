@@ -4,5 +4,5 @@
 /**
  * 
  */
-module P5 {
+module ADSOF_P5 {
 }
