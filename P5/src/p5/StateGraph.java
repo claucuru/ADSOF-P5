@@ -12,6 +12,8 @@ public class StateGraph<T> {
 	public StateGraph(String name, String action) {
 		this.name = name; 
 		this.action = action; 
+		this.initial_node = null; 
+		this.final_node = null; 
 		this.nodes = new LinkedList<Node<T>>();
 	}
 	
@@ -33,14 +35,22 @@ public class StateGraph<T> {
 	public void setInitial(String name) {
 		Node <T> n = this.findNode(name);
 		if(n != null) {
+			if(this.initial_node != null) { /*TODO: por ahora asumimos que se mete al final, a saber luego*/
+				this.nodes.add(this.initial_node);
+			}
 			this.initial_node = n; 
+			this.nodes.remove(n);
 		}
 	}
 
 	public void setFinal(String name) {
 		Node <T> n = this.findNode(name);
 		if(n != null) {
-			this.final_node = n; 
+			if(this.final_node != null) { /*TODO: por ahora asumimos que se mete al final, a saber luego*/
+				this.nodes.add(this.final_node);
+			}
+			this.final_node = n;
+			this.nodes.remove(n);
 		}
 	}
 
@@ -53,19 +63,59 @@ public class StateGraph<T> {
 		}
 	}
 
-	public NumericData run(NumericData input, boolean debug) {
-		// TODO Auto-generated method stub
-		return null;
+	public T run(T input, boolean debug) {
+		String message_debug = "";
+		int step = 1; 
+		message_debug += "Step " + step +" (" + this.name + ") - input: " + input + "\n";
+		if(this.initial_node != null) {
+			this.initial_node.getAction().accept(input);
+			step++;
+			message_debug += "Step " + step +" (" + this.name + ") - "+ this.initial_node.getName() +" executed: " + input + "\n";
+		}
+		for(Node<T> n: this.nodes) {
+			n.getAction().accept(input);
+			step++;
+			message_debug += "Step " + step +" (" + this.name + ") - "+ n.getName() +" executed: " + input + "\n";
+		}
+		
+		if(this.final_node != null) {
+			this.final_node.getAction().accept(input);
+			step++;
+			message_debug += "Step " + step +" (" + this.name + ") - "+ this.final_node.getName() +" executed: " + input + "\n";
+		}
+		
+		message_debug = message_debug.substring(0, message_debug.length() - 1);
+		if (debug == true) {
+			System.out.println(message_debug);
+		}
+		return input;
 	}
 	
 	@Override
 	public String toString() {
 		String buffer = "";
+		int counter = this.nodes.size() -1;
+		if(this.initial_node != null) {
+			counter++; 
+		}
+		if(this.final_node != null) {
+			counter ++; 
+		}
 		buffer += "Workflow '" + this.name + "' (" + this.action + "):\n";
 		buffer += "- Nodes: {";
-		for(Node<T> n:  this.nodes) {
-			buffer += n.getName() + "=" + "Node " + n.getName() + "("; /*TODO: ver de donde sale lo del output node, creo que son los nodos que van detrás pero ni idea*/
+		if(this.initial_node != null) {
+			buffer += this.initial_node + "(" + counter + " output nodes)" + ", "; 
+			counter --;
 		}
+		for(Node<T> n:  this.nodes) {
+			buffer += n + "(" + counter + " output nodes)" + ", "; 
+			counter --; 
+		}
+		if(this.final_node != null) {
+			buffer += this.final_node + "(" + counter + " output nodes)" + ", "; 
+			counter --;
+		}
+		buffer = buffer.substring(0, buffer.length() - 2);
 		buffer += "}\n";
 		buffer += "- Initial: " + this.initial_node.getName() + "\n";
 		buffer += "- Final: " + this.final_node.getName() + "\n";

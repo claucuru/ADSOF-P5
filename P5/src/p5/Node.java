@@ -11,7 +11,7 @@ public class Node<T> {
 	public Node(String name, Consumer<T> action) {
 		this.name = name; 
 		this.action = action; 
-		this.edges = new HashSet<Node<T>>();
+		this.edges = new LinkedHashSet<Node<T>>();
 	}
 
 	public String getName() {
@@ -28,5 +28,12 @@ public class Node<T> {
 	
 	public void addEdges(Node <T> edge) {
 		this.edges.add(edge);
+	}
+	
+	@Override
+	public String toString() {
+		String buffer = "";
+		buffer += this.name + "=" + "Node " + this.name;
+		return buffer; 
 	}
 }
