@@ -59,7 +59,6 @@ public class StateGraph<T> {
 		Node<T> node2 = this.findNode(name_node2);
 		if(node1 != null && node2 != null) {
 			this.nodes.get(this.nodes.indexOf(node1)).addEdges(this.nodes.get(this.nodes.indexOf(node2)));
-			this.nodes.get(this.nodes.indexOf(node2)).addEdges(this.nodes.get(this.nodes.indexOf(node1)));
 		}
 	}
 
@@ -67,11 +66,19 @@ public class StateGraph<T> {
 		String message_debug = "";
 		int step = 1; 
 		message_debug += "Step " + step +" (" + this.name + ") - input: " + input + "\n";
+		
 		if(this.initial_node != null) {
 			this.initial_node.getAction().accept(input);
 			step++;
 			message_debug += "Step " + step +" (" + this.name + ") - "+ this.initial_node.getName() +" executed: " + input + "\n";
 		}
+		
+		for(Node<T> n: this.initial_node.getEdges()) {
+			n.getAction().accept(input);
+			step++;
+			message_debug += "Step " + step +" (" + this.name + ") - "+ n.getName() +" executed: " + input + "\n";
+		}
+		
 		for(Node<T> n: this.nodes) {
 			n.getAction().accept(input);
 			step++;
@@ -90,6 +97,32 @@ public class StateGraph<T> {
 		}
 		return input;
 	}
+	
+	/*TODO: idea del run*/
+	/*for empezando por el inicial y cogemos el hijo y vuelve arriba hasta que el hijo o sea null o sea el final*/
+	/*public T run(T input, boolean debug) {
+		String message_debug = "";
+		int step = 1; 
+		message_debug += "Step " + step +" (" + this.name + ") - input: " + input + "\n";
+		Node<T> initial = null; 
+		Node<T> final_n = null;
+		
+		if(this.initial_node != null) {
+			initial = this.initial_node;
+		}else {
+			initial = this.nodes.getFirst();
+		}
+		
+		if(this.final_node != null) {
+			final_n = this.final_node;
+		}else {
+			final_n = this.nodes.getLast();
+		}
+		
+		initial.run(input, debug, final_n, step+1);
+		
+		return input;
+	}*/
 	
 	@Override
 	public String toString() {
@@ -119,7 +152,17 @@ public class StateGraph<T> {
 		buffer += "}\n";
 		buffer += "- Initial: " + this.initial_node.getName() + "\n";
 		buffer += "- Final: " + this.final_node.getName() + "\n";
+		buffer = buffer.substring(0, buffer.length() - 1);
 		return buffer; 
+	}
+
+	public void addConditionalEdge(String node_name1, String node_name2, Consumer<T> action) {
+		Node<T> node1 = this.findNode(node_name1);
+		Node<T> node2 = this.findNode(node_name2);
+		this.addEdge(node_name1, node_name2);
+		if(node1 != null && node2 != null) {
+			this.nodes.get(this.nodes.indexOf(node1)).setEdgeAction(action);
+		}
 	}
 
 }

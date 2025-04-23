@@ -1,5 +1,5 @@
 package p5;
-public class Main {
+public class MainEjercicio1 {
 	public static void main(String[] args) {
 		StateGraph<NumericData> sg = buildWorflow();
 		
