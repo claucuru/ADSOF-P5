@@ -10,6 +10,10 @@ public class MainEjercicio2{
 		System.out.println("input = " + input);
 		NumericData output = sg.run(input, true); //ejecución con debug
 		System.out.println("result = " + output);
+		input = new NumericData(2, 2);
+		System.out.println("input = " + input);
+		output = sg.run(input, true); //ejecución con debug
+		System.out.println("result = " + output);
 		      
 	}
 	
@@ -18,7 +22,7 @@ public class MainEjercicio2{
 		sg.addNode("sum", (NumericData mo) -> mo.put("result", mo.get("op1")+mo.get("op2")))
 		.addNode("square", (NumericData mo) -> mo.put("result", mo.get("result")*mo.get("result")));
 		
-		sg.addConditionalEdge("sum", "square", (NumericData mo) -> mo.put("result", mo.get("result")%2));
+		sg.addConditionalEdge("sum", "square", (NumericData mo) -> mo.get("result")%2);
 		
 		sg.setInitial("sum");
 		sg.setFinal("square");

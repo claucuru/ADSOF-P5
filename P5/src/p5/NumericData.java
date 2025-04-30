@@ -1,11 +1,10 @@
 package p5;
-import java.util.LinkedHashMap;
+import java.util.*;
 
-public class NumericData extends LinkedHashMap<String, Integer>{
+public class NumericData extends Data<Integer>{
 	public NumericData(int op1, int op2) {
-		this.put("op1", op1);
-		this.put("op2", op2);
-		this.put("result", 0);
+		super(op1, op2);
+		super.put("result", 0);
 	}
 
 }
