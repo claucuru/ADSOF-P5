@@ -7,7 +7,7 @@ public class Node<T> {
 	private String name; 
 	private Consumer<T> action; 
 	private List<Node<T>> edges;
-	private Function<T, Integer> conditionalAction;
+	private Predicate<T> conditionalAction;
 	
 	public Node(String name, Consumer<T> action) {
 		this.name = name; 
@@ -28,7 +28,7 @@ public class Node<T> {
 		return edges;
 	}
 	
-	public Function<T, Integer> getConditionalAction() {
+	public Predicate<T> getConditionalAction() {
 		return this.conditionalAction; 
 	}
 	
@@ -36,7 +36,7 @@ public class Node<T> {
 		this.edges.add(edge);
 	}
 	
-	public void setEdgeAction(Function<T, Integer> action) {
+	public void setEdgeAction(Predicate<T> action) {
 		this.conditionalAction = action; 
 		
 	}

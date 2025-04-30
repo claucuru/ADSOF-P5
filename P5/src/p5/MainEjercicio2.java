@@ -22,7 +22,7 @@ public class MainEjercicio2{
 		sg.addNode("sum", (NumericData mo) -> mo.put("result", mo.get("op1")+mo.get("op2")))
 		.addNode("square", (NumericData mo) -> mo.put("result", mo.get("result")*mo.get("result")));
 		
-		sg.addConditionalEdge("sum", "square", (NumericData mo) -> mo.get("result")%2);
+		sg.addConditionalEdge("sum", "square", (NumericData mo) -> mo.get("result") % 2 == 0);
 		
 		sg.setInitial("sum");
 		sg.setFinal("square");

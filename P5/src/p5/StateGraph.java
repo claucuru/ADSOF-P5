@@ -3,11 +3,16 @@ package p5;
 import java.util.*;
 import java.util.function.*;
 
+/*Para el ej3 tenemos que crear una clase que herede de Node que contenga un StateGraph porque al final la 
+ * funcionalidad es la misma, también nos recomienda hacer que el getAction ejecute la action en vez de devolverla
+ * para que cuando tengamos un grafo ejecute todos los nodos del grafo :)*/
+
 public class StateGraph<T> {
 	private String name, action; 
 	private Node<T> initial_node;
 	private List<Node<T>> nodes;
 	private Node<T> final_node;
+	
 	
 	public StateGraph(String name, String action) {
 		this.name = name; 
@@ -54,15 +59,16 @@ public class StateGraph<T> {
 		}
 	}
 
-	public void addEdge(String name_node1, String name_node2) {
+	public StateGraph<T> addEdge(String name_node1, String name_node2) {
 		Node<T> node1 = this.findNode(name_node1);
 		Node<T> node2 = this.findNode(name_node2);
 		if(node1 != null && node2 != null) {
 			this.nodes.get(this.nodes.indexOf(node1)).addEdges(this.nodes.get(this.nodes.indexOf(node2)));
 		}
+		return this;
 	}
 	
-	public void addConditionalEdge(String node_name1, String node_name2, Function<T, Integer> action) {
+	public void addConditionalEdge(String node_name1, String node_name2, Predicate<T> action) {
 		this.addEdge(node_name1, node_name2);
 		Node<T> node1 = this.findNode(node_name1);
 		Node<T> node2 = this.findNode(node_name2);
@@ -75,7 +81,6 @@ public class StateGraph<T> {
 	public T run(T input, boolean debug) {
 		String message_debug = "";
 		int step = 1; 
-		int result = -1; 
 		message_debug += "Step " + step +" (" + this.name + ") - input: " + input + "\n";
 		Node<T> node = null; 
 		
@@ -91,9 +96,8 @@ public class StateGraph<T> {
 		
 		while(node != this.final_node && node != null) {
 			List <Node <T>> nodes = new ArrayList<>(node.getEdges());
-			if(node.getConditionalAction() != null) {
-				result = node.getConditionalAction().apply(input);
-				if(result == 0) {
+			if(node.getConditionalAction()!=null) {
+				if(node.getConditionalAction().test(input)) {
 					nodes.getFirst().getAction().accept(input);
 					step++;
 					message_debug += "Step " + step +" (" + this.name + ") - "+ nodes.getFirst().getName() +" executed: " + input + "\n";
@@ -146,7 +150,7 @@ public class StateGraph<T> {
 		return buffer; 
 	}
 
-	public T addWfNode(String string, StateGraph<T> wfNumeric) {
+	public T addWfNode(String string, StateGraph<? extends Data> wfNumeric) {
 		// TODO Auto-generated method stub
 		return null;
 	}
