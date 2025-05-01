@@ -7,7 +7,7 @@ import java.util.function.*;
  * funcionalidad es la misma, también nos recomienda hacer que el getAction ejecute la action en vez de devolverla
  * para que cuando tengamos un grafo ejecute todos los nodos del grafo :)*/
 
-public class StateGraph<T> {
+public class StateGraph<T extends Data<?>> {
 	private String name, action; 
 	private Node<T> initial_node;
 	private List<Node<T>> nodes;
@@ -20,6 +20,18 @@ public class StateGraph<T> {
 		this.initial_node = null; 
 		this.final_node = null; 
 		this.nodes = new LinkedList<Node<T>>();
+	}
+	
+	public Node<T> getInitialNode(){
+		return this.initial_node;
+	}
+	
+	public Node<T> getFinalNode(){
+		return this.final_node;
+	}
+	
+	public List<Node<T>> getNodes(){
+		return this.nodes; 
 	}
 	
 	public Node<T> findNode(String name){
@@ -35,6 +47,12 @@ public class StateGraph<T> {
 		Node<T> n = new Node<T>(name, action);
 		this.nodes.add(n);
 		return this;
+	}
+	
+	public NodeGraph<T> addWfNode(String name, StateGraph<? extends Data<?>> wfNumeric) {
+		NodeGraph<T> n = new NodeGraph<T>(name, wfNumeric);
+		this.nodes.add(n);
+		return n;
 	}
 
 	public void setInitial(String name) {
@@ -85,26 +103,25 @@ public class StateGraph<T> {
 		Node<T> node = null; 
 		
 		if(this.initial_node != null) {
-			this.initial_node.getAction().accept(input);
+			this.initial_node.executeAction(input);
 			step++;
 			message_debug += "Step " + step +" (" + this.name + ") - "+ this.initial_node.getName() +" executed: " + input + "\n";
 			node = this.initial_node;
 		}else {
 			node = this.nodes.getFirst();
 		}
-
 		
 		while(node != this.final_node && node != null) {
 			List <Node <T>> nodes = new ArrayList<>(node.getEdges());
 			if(node.getConditionalAction()!=null) {
 				if(node.getConditionalAction().test(input)) {
-					nodes.getFirst().getAction().accept(input);
+					nodes.getFirst().executeAction(input);
 					step++;
 					message_debug += "Step " + step +" (" + this.name + ") - "+ nodes.getFirst().getName() +" executed: " + input + "\n";
 				}
 				node = nodes.getFirst();
 			}else {
-				nodes.getFirst().getAction().accept(input);
+				nodes.getFirst().executeAction(input);
 				step++;
 				message_debug += "Step " + step +" (" + this.name + ") - "+ nodes.getFirst().getName() +" executed: " + input + "\n";
 				node = nodes.getFirst();
@@ -148,10 +165,5 @@ public class StateGraph<T> {
 		buffer += "- Final: " + this.final_node.getName() + "\n";
 		buffer = buffer.substring(0, buffer.length() - 1);
 		return buffer; 
-	}
-
-	public T addWfNode(String string, StateGraph<? extends Data> wfNumeric) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

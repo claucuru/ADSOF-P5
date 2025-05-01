@@ -8,15 +8,6 @@ public class StringData extends Data<String>{
 		super(op1, op2);
 		super.put("result", "");
 	}
-
-	public StringData withInjector(Consumer<StringData> action) {
-		// TODO Auto-generated method stub
-		return this;
-	}
-	
-	public StringData withExtractor(BiConsumer<NumericData, StringData> action){
-		return null; 
-	}
 	
 	public NumericData toNumericData() {
 		// TODO Auto-generated method stub

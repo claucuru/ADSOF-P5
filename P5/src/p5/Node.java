@@ -47,4 +47,9 @@ public class Node<T> {
 		buffer += this.name + "=" + "Node " + this.name;
 		return buffer; 
 	}
+
+
+	public void executeAction(T input) {
+		this.action.accept(input);
+	}
 }
