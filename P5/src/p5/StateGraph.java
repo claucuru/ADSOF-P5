@@ -161,8 +161,16 @@ public class StateGraph<T extends Data<?>> {
 		}
 		buffer = buffer.substring(0, buffer.length() - 2);
 		buffer += "}\n";
-		buffer += "- Initial: " + this.initial_node.getName() + "\n";
-		buffer += "- Final: " + this.final_node.getName() + "\n";
+		String name = "None";
+		if(this.initial_node != null) {
+			name = this.initial_node.getName();
+		}
+		buffer += "- Initial: " + name + "\n";
+		name = "None";
+		if(this.final_node != null) {
+			name = this.final_node.getName();
+		}
+		buffer += "- Final: " + name + "\n";
 		buffer = buffer.substring(0, buffer.length() - 1);
 		return buffer; 
 	}

@@ -5,11 +5,11 @@ public class MainEjercicio3{
 		StateGraph<NumericData> sg = buildWorflow1();
 		StateGraph<StringData> sd = buildWorflow(sg);
 		
-		System.out.println(sg);
+		System.out.println(sd);
 		
-		NumericData input = new NumericData(2, 3);
+		StringData input = new StringData("jamon", 2);
 		System.out.println("input = " + input);
-		NumericData output = sg.run(input, true); //ejecución con debug
+		StringData output = sd.run(input, true); //ejecución con debug
 		System.out.println("result = " + output);
 		      
 	}

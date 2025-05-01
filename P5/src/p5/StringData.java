@@ -1,31 +1,41 @@
 package p5;
 
 import java.util.*;
-import java.util.function.*;
 
-public class StringData extends Data<String>{
-	public StringData(String op1, String op2) {
-		super(op1, op2);
-		super.put("result", "");
-	}
-	
-	public NumericData toNumericData() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+public class StringData extends Data<String> {
+    private int times;
 
-	public StringData setTimes(Integer integer) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public StringData(String word, int times) {
+        super(word, "");
+        this.times = times;
+        super.put("result", "");
+    }
 
-	public StringData replicate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public NumericData toNumericData() {
+        return new NumericData(this.times, 0);
+    }
 
-	public int times() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    public StringData setTimes(int times) {
+        this.times = times;
+        return this;
+    }
+
+    public StringData replicate() {
+        if (this.times > 0) {
+            String word = this.get("op1");
+            String currentResult = this.get("result");
+            this.put("result", currentResult + word);
+            this.times--;
+        }
+        return this;
+    }
+
+    public int times() {
+        return this.times;
+    }
+
+    @Override
+    public String toString() {
+        return "word: " + this.get("op1") + ", times: " + times + ", result: " + this.get("result");
+    }
 }

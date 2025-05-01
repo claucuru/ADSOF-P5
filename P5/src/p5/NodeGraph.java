@@ -14,8 +14,11 @@ public class NodeGraph<T extends Data<?>> extends Node<T>{
 	
 	@Override
 	public void executeAction(T input) {
+		T newInput;
 		this.injector.accept(input);
-//		sg.run(input, false);
+		newInput = input;
+		sg.run(newInput, false);
+		this.extractor.accept(newInput, input);
 	}
 	
 	public NodeGraph<T> withInjector(Consumer<T> action) {
