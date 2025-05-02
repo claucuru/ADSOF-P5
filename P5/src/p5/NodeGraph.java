@@ -12,14 +12,15 @@ public class NodeGraph<T extends Data<?>> extends Node<T>{
 		this.sg = wfNumeric; 
 	}
 	
-	@Override
-	public void executeAction(T input) {
-		T newInput;
-		this.injector.accept(input);
-		newInput = input;
-		sg.run(newInput, false);
-		this.extractor.accept(newInput, input);
-	}
+	/*TODO ej3*/
+//	@Override
+//	public void executeAction(T input) {
+//		T newInput;
+//		this.injector.accept(input);
+//		newInput = input;
+//		sg.run(newInput, false);
+//		this.extractor.accept(newInput, input);
+//	}
 	
 	public NodeGraph<T> withInjector(Consumer<T> action) {
 		this.injector = action; 

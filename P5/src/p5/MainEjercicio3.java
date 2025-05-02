@@ -2,8 +2,8 @@ package p5;
 
 public class MainEjercicio3{
 	public static void main(String[] args) {
-		StateGraph<NumericData> sg = buildWorflow1();
-		StateGraph<StringData> sd = buildWorflow(sg);
+		StateGraph<NumericData> sg = buildWorkflow1();
+		StateGraph<StringData> sd = buildWorkflow(sg);
 		
 		System.out.println(sd);
 		
@@ -14,7 +14,7 @@ public class MainEjercicio3{
 		      
 	}
 	
-	private static StateGraph<NumericData> buildWorflow1(){
+	private static StateGraph<NumericData> buildWorkflow1(){
 		StateGraph<NumericData> sg = new StateGraph<>("math1", "Add two numbers, and square if even");
 		sg.addNode("sum", (NumericData mo) -> mo.put("result", mo.get("op1")+mo.get("op2")))
 		.addNode("square", (NumericData mo) -> mo.put("result", mo.get("result")*mo.get("result")));
@@ -27,7 +27,7 @@ public class MainEjercicio3{
 		return sg; 
 	}
 	
-	private static StateGraph<StringData> buildWorflow(StateGraph<NumericData> wfNumeric){
+	private static StateGraph<StringData> buildWorkflow(StateGraph<NumericData> wfNumeric){
 		StateGraph<StringData> sg = new StateGraph<>("replicate", "Replicates a given word");
 		
 		sg.addWfNode("calculate", wfNumeric)

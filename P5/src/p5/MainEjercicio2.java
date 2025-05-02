@@ -2,7 +2,7 @@ package p5;
 
 public class MainEjercicio2{
 	public static void main(String[] args) {
-		StateGraph<NumericData> sg = buildWorflow();
+		StateGraph<NumericData> sg = buildWorkflow();
 		
 		System.out.println(sg);
 		
@@ -17,7 +17,7 @@ public class MainEjercicio2{
 		      
 	}
 	
-	private static StateGraph<NumericData> buildWorflow(){
+	private static StateGraph<NumericData> buildWorkflow(){
 		StateGraph<NumericData> sg = new StateGraph<>("math1", "Add two numbers, and square if even");
 		sg.addNode("sum", (NumericData mo) -> mo.put("result", mo.get("op1")+mo.get("op2")))
 		.addNode("square", (NumericData mo) -> mo.put("result", mo.get("result")*mo.get("result")));

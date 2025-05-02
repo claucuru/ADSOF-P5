@@ -22,6 +22,10 @@ public class StateGraph<T extends Data<?>> {
 		this.nodes = new LinkedList<Node<T>>();
 	}
 	
+	public String getName() {
+		return this.name; 
+	}
+	
 	public Node<T> getInitialNode(){
 		return this.initial_node;
 	}
@@ -113,6 +117,9 @@ public class StateGraph<T extends Data<?>> {
 		
 		while(node != this.final_node && node != null) {
 			List <Node <T>> nodes = new ArrayList<>(node.getEdges());
+			if(nodes.isEmpty()) {
+				break; 
+			}
 			if(node.getConditionalAction()!=null) {
 				if(node.getConditionalAction().test(input)) {
 					nodes.getFirst().executeAction(input);
