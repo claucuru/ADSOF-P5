@@ -20,10 +20,14 @@ public class MainEjercicio4 {
 	private static StreamingStateGraph<DoubleData> buildWorkflow(){
 		StreamingStateGraph<DoubleData> sg = new StreamingStateGraph<DoubleData>("average", "Calculates the average of incoming data");
 		sg.addNode("average",  input -> { if(sg.getHistory() == null) {
-											  input.put("op2", input.get("op1"));
-										  }else {
-											  input.put("op2", (sg.getHistory().getLast().get("op2")+ input.get("op1"))/2);
-										  }
+			  								input.put("op2", input.get("op1"));
+		  								}else {
+		  									double suma = input.get("op1");
+		  									for(DoubleData t: sg.getHistory()) {
+		  										suma += t.get("op1");
+		  									}
+		  								input.put("op2", (suma/(sg.getHistory().size()+1)));
+		  								}
 										});
 		sg.setInitial("average"); 
 		return sg; 
