@@ -1,8 +1,12 @@
-package p5;
+package p5.ejercicio3;
 
 import java.util.function.*;
 
-public class NodeGraph<T extends Data<?>> extends Node<T>{
+import p5.ejercicio1.Data;
+import p5.ejercicio1.Node;
+import p5.ejercicio1.StateGraph;
+
+public class NodeGraph<T extends Data<?>> extends Node<T>{ //TODO: NodeGraph puede tener dos tipos abstractos
 	StateGraph<? extends Data<?>> sg; 
 	Consumer<T> injector; 
 	BiConsumer<? extends Data<?>, T> extractor; 

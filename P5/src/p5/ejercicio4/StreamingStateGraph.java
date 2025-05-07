@@ -1,6 +1,10 @@
-package p5;
+package p5.ejercicio4;
 
 import java.util.*;
+
+import p5.ejercicio1.Data;
+import p5.ejercicio1.Node;
+import p5.ejercicio1.StateGraph;
 
 public class StreamingStateGraph<T extends Data<?>> extends StateGraph<T>{
 	public List<T> history; 

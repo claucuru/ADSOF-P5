@@ -1,11 +1,12 @@
-package p5;
+package p5.ejercicio1;
 
 import java.util.*;
 import java.util.function.*;
 
 public class Node<T> {
 	private String name; 
-	private Consumer<T> action; 
+	private Consumer<T> action;
+	// TODO: mirar si poner el conditional en el StateGraph
 	private List<Node<T>> edges;
 	private Predicate<T> conditionalAction;
 	

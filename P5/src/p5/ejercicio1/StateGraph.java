@@ -1,13 +1,15 @@
-package p5;
+package p5.ejercicio1;
 
 import java.util.*;
 import java.util.function.*;
+import p5.ejercicio3.*;
+import p5.ejercicio5.*;
 
-/*Para el ej3 tenemos que crear una clase que herede de Node que contenga un StateGraph porque al final la 
+/*TODO Para el ej3 tenemos que crear una clase que herede de Node que contenga un StateGraph porque al final la 
  * funcionalidad es la misma, también nos recomienda hacer que el getAction ejecute la action en vez de devolverla
  * para que cuando tengamos un grafo ejecute todos los nodos del grafo :)*/
 
-public class StateGraph<T extends Data<?>> {
+public class StateGraph<T extends Data<?>> implements Graph<T>{
 	private String name, action; 
 	private Node<T> initial_node;
 	private List<Node<T>> nodes;
@@ -24,6 +26,10 @@ public class StateGraph<T extends Data<?>> {
 	
 	public String getName() {
 		return this.name; 
+	}
+	
+	public String getAction() {
+		return this.action;
 	}
 	
 	public Node<T> getInitialNode(){
@@ -47,7 +53,7 @@ public class StateGraph<T extends Data<?>> {
 		return null; 
 	}
 	
-	public StateGraph<T> addNode(String name, Consumer<T> action) {
+	public Graph<T> addNode(String name, Consumer<T> action) {
 		Node<T> n = new Node<T>(name, action);
 		this.nodes.add(n);
 		return this;
@@ -59,7 +65,7 @@ public class StateGraph<T extends Data<?>> {
 		return n;
 	}
 
-	public void setInitial(String name) {
+	public Graph<T> setInitial(String name) {
 		Node <T> n = this.findNode(name);
 		if(n != null) {
 			if(this.initial_node != null) {
@@ -68,6 +74,7 @@ public class StateGraph<T extends Data<?>> {
 			this.initial_node = n; 
 			this.nodes.remove(n);
 		}
+		return this; 
 	}
 
 	public void setFinal(String name) {
@@ -90,13 +97,14 @@ public class StateGraph<T extends Data<?>> {
 		return this;
 	}
 	
-	public void addConditionalEdge(String node_name1, String node_name2, Predicate<T> action) {
+	public Graph<T> addConditionalEdge(String node_name1, String node_name2, Predicate<T> action) {
 		this.addEdge(node_name1, node_name2);
 		Node<T> node1 = this.findNode(node_name1);
 		Node<T> node2 = this.findNode(node_name2);
 		if(node1 != null && node2 != null) {
 			this.nodes.get(this.nodes.indexOf(node1)).setEdgeAction(action);
 		}
+		return this; 
 	}
 
 	/*for empezando por el inicial y cogemos el hijo y vuelve arriba hasta que el hijo o sea null o sea el final*/
@@ -140,6 +148,10 @@ public class StateGraph<T extends Data<?>> {
 			System.out.println(message_debug);
 		}
 		return input;
+	}
+	
+	public String history() {
+		return "";
 	}
 	
 	@Override

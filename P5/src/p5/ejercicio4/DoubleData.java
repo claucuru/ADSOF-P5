@@ -1,6 +1,8 @@
-package p5;
+package p5.ejercicio4;
 
 import java.text.DecimalFormat;
+
+import p5.ejercicio1.Data;
 
 public class DoubleData extends Data<Double>{
 

@@ -1,6 +1,9 @@
-package p5;
+package p5.ejercicio3;
 
 import java.util.*;
+
+import p5.ejercicio1.Data;
+import p5.ejercicio1.NumericData;
 
 public class StringData extends Data<String> {
     private int times;

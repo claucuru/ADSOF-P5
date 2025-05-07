@@ -1,4 +1,4 @@
-package p5;
+package p5.ejercicio1;
 import java.util.*;
 
 public class NumericData extends Data<Integer>{

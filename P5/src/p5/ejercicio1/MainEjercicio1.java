@@ -1,4 +1,4 @@
-package p5;
+package p5.ejercicio1;
 public class MainEjercicio1 {
 	public static void main(String[] args) {
 		StateGraph<NumericData> sg = buildWorkflow();

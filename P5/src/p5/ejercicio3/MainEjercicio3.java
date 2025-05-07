@@ -1,4 +1,7 @@
-package p5;
+package p5.ejercicio3;
+
+import p5.ejercicio1.NumericData;
+import p5.ejercicio1.StateGraph;
 
 public class MainEjercicio3{
 	public static void main(String[] args) {
