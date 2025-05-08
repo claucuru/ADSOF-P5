@@ -1,0 +1,2 @@
+[08/05/2025 - 15:40:53] node loop-down executed, with output: {op1=2, op2=0, result=0}
+[08/05/2025 - 15:40:53] node loop-down executed, with output: {op1=1, op2=0, result=0}
