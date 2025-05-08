@@ -6,14 +6,23 @@ import p5.ejercicio3.*;
 import p5.ejercicio5.*;
 
 
-
+/**
+ * @author Claudia Cuevas Ruano
+ * @author Lucia Espinosa Murillo
+ * 
+ * Clase que define un StateGraph e implementa la interfaz Graph
+ */
 public class StateGraph<T extends Data<?>> implements Graph<T>{
 	private String name, action; 
 	private Node<T> initial_node;
 	private List<Node<T>> nodes;
 	private Node<T> final_node;
 	
-	
+	/**
+	 * Constructor de la clase
+	 * @param name nombre del grafo
+	 * @param action accion del grafo
+	 */
 	public StateGraph(String name, String action) {
 		this.name = name; 
 		this.action = action; 
@@ -41,7 +50,12 @@ public class StateGraph<T extends Data<?>> implements Graph<T>{
 	public List<Node<T>> getNodes(){
 		return this.nodes; 
 	}
-	
+
+	/**
+	 * Funcion que encuentra un nodo por su nombre
+	 * @param name nombre del nodo
+	 * @return el nodo en caso de encontrarlo, null en caso contrario
+	 */
 	public Node<T> findNode(String name){
 		for(Node<T> n: this.nodes) {
 			if(n.getName() == name) {
@@ -50,13 +64,25 @@ public class StateGraph<T extends Data<?>> implements Graph<T>{
 		}
 		return null; 
 	}
-	
+
+	/**
+	 * Funcion que añade un  nodo a un grafo
+	 * @param name nombre del nodo
+	 * @param accion del nodo
+	 */
 	public Graph<T> addNode(String name, Consumer<T> action) {
 		Node<T> n = new Node<T>(name, action);
 		this.nodes.add(n);
 		return this;
 	}
-	
+
+	/**
+	 * Funcion que añade un grafo a un nodo. 
+	 * Crea el nodo con e introduce el grafo
+	 * @param name nombre del nodo
+	 * @param wfNumeric grafo 
+	 * @return nodo que contiene el grafo
+	 */
 	public <S extends Data<?>> NodeGraph<T, S> addWfNode(String name, StateGraph<S> wfNumeric) {
 		NodeGraph<T, S> n = new NodeGraph<T, S>(name, wfNumeric);
 		this.nodes.add(n);
@@ -86,6 +112,12 @@ public class StateGraph<T extends Data<?>> implements Graph<T>{
 		}
 	}
 
+	/**
+	 * Funcion que relaciona dos nodos en un edge. Para ello se añade a una lista del primer nodo
+	 * @param name_node1 
+	 * @param name_node2
+	 * @return el StateGraph
+	 */
 	public StateGraph<T> addEdge(String name_node1, String name_node2) {
 		Node<T> node1 = this.findNode(name_node1);
 		Node<T> node2 = this.findNode(name_node2);
@@ -94,7 +126,14 @@ public class StateGraph<T extends Data<?>> implements Graph<T>{
 		}
 		return this;
 	}
-	
+
+	/**
+	 * Funcion que relaciona dos nodos en un edge con una condicion. Para ello se añade a una lista del primer nodo
+	 * @param name_node1 
+	 * @param name_node2
+	 * @param action 
+	 * @return el StateGraph
+	 */
 	public Graph<T> addConditionalEdge(String node_name1, String node_name2, Predicate<T> action) {
 		this.addEdge(node_name1, node_name2);
 		Node<T> node1 = this.findNode(node_name1);
@@ -105,7 +144,12 @@ public class StateGraph<T extends Data<?>> implements Graph<T>{
 		return this; 
 	}
 
-	/*for empezando por el inicial y cogemos el hijo y vuelve arriba hasta que el hijo o sea null o sea el final*/
+
+	/**
+	 * Funcion que ejecuta todos los nodos de un grafo
+	 * @param input grafo
+	 * @param debug
+	 */
 	public T run(T input, boolean debug) {
 		String message_debug = "";
 		int step = 1; 
@@ -150,7 +194,11 @@ public class StateGraph<T extends Data<?>> implements Graph<T>{
 		}
 		return input;
 	}
-	
+
+	/**
+	 * Funcion que guarda el historial de un grafo
+	 * @return buffer con el historial
+	 */
 	public String history() {
 		return "";
 	}
