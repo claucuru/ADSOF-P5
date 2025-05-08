@@ -8,12 +8,21 @@ import p5.ejercicio1.NumericData;
 public class StringData extends Data<String> {
     private int times;
 
+    /**
+     * Constructor de la clase
+     * @param word palabra
+     * @param times tiempo
+     */
     public StringData(String word, int times) {
         super(word, "");
         this.times = times;
         super.put("result", "");
     }
 
+    /**
+     * Funcion que crea un dato numérico apartir del tiempo 
+     * @return numericData
+     */
     public NumericData toNumericData() {
     	NumericData nd = new NumericData(this.times, 0);
         nd.put("op1", this.times);
@@ -26,6 +35,10 @@ public class StringData extends Data<String> {
         return this;
     }
 
+    /**
+     * Funcion que decrementa el tiempo y añade una copia de word a result 
+     * @return StringData
+     */
     public StringData replicate() {
         if (this.times > 0) {
             String word = this.get("op1");
