@@ -1,9 +1,11 @@
 package p5.ejercicio5;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import p5.ejercicio1.Data;
+import p5.ejercicio1.Node;
 
 public abstract class Decorator<T extends Data<?>> implements Graph<T> {
 	Graph<T> graph;
@@ -33,7 +35,29 @@ public abstract class Decorator<T extends Data<?>> implements Graph<T> {
 	}
 	
 	public T run(T input, boolean debug) {
-		return this.graph.run(input, debug);
+		T output = this.graph.run(input, debug);
+		return output;
+		
+	}
+	
+	public Node<T> getInitialNode(){
+		return this.graph.getInitialNode();
+	}
+	
+	public Node<T> getFinalNode(){
+		return this.graph.getFinalNode();
+	}
+	
+	public String getName() {
+		return this.graph.getName(); 
+	}
+	
+	public List<Node<T>> getNodes(){
+		return this.graph.getNodes(); 
+	}
+	
+	public String toString() {
+		return this.graph.toString();
 	}
 	
 }

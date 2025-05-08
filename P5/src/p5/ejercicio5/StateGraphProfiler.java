@@ -33,16 +33,6 @@ public class StateGraphProfiler<T extends Data<?>> extends Decorator<T>{
 
 	@Override
 	public String history() {
-//		String buffer = "[";
-//		for(Map.Entry<LocalDateTime, T> t: this.history.entrySet()) {
-////			buffer += 
-//		}
-////		for(T t: this.history) {
-////			buffer += t + ", ";
-////		}
-//		buffer = buffer.substring(0, buffer.length() - 1);
-//		buffer += "]";
-//		return buffer; 
 		return sl.history();
 	}
 
@@ -51,4 +41,8 @@ public class StateGraphProfiler<T extends Data<?>> extends Decorator<T>{
 		return sl.run(input, debug);
 	}
 	
+	@Override
+	public String toString() {
+		return sl.toString()  + " [profiled]";
+	}
 }

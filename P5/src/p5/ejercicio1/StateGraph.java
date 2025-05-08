@@ -5,9 +5,7 @@ import java.util.function.*;
 import p5.ejercicio3.*;
 import p5.ejercicio5.*;
 
-/*TODO Para el ej3 tenemos que crear una clase que herede de Node que contenga un StateGraph porque al final la 
- * funcionalidad es la misma, también nos recomienda hacer que el getAction ejecute la action en vez de devolverla
- * para que cuando tengamos un grafo ejecute todos los nodos del grafo :)*/
+
 
 public class StateGraph<T extends Data<?>> implements Graph<T>{
 	private String name, action; 
@@ -59,8 +57,8 @@ public class StateGraph<T extends Data<?>> implements Graph<T>{
 		return this;
 	}
 	
-	public NodeGraph<T> addWfNode(String name, StateGraph<? extends Data<?>> wfNumeric) {
-		NodeGraph<T> n = new NodeGraph<T>(name, wfNumeric);
+	public <S extends Data<?>> NodeGraph<T, S> addWfNode(String name, StateGraph<S> wfNumeric) {
+		NodeGraph<T, S> n = new NodeGraph<T, S>(name, wfNumeric);
 		this.nodes.add(n);
 		return n;
 	}
@@ -122,7 +120,7 @@ public class StateGraph<T extends Data<?>> implements Graph<T>{
 		}else {
 			node = this.nodes.getFirst();
 		}
-		
+
 		while(node != this.final_node && node != null) {
 			List <Node <T>> nodes = new ArrayList<>(node.getEdges());
 			if(nodes.isEmpty()) {
@@ -133,6 +131,9 @@ public class StateGraph<T extends Data<?>> implements Graph<T>{
 					nodes.getFirst().executeAction(input);
 					step++;
 					message_debug += "Step " + step +" (" + this.name + ") - "+ nodes.getFirst().getName() +" executed: " + input + "\n";
+				}
+				if (node.equals(nodes.getFirst())){
+					break;
 				}
 				node = nodes.getFirst();
 			}else {

@@ -15,7 +15,10 @@ public class StringData extends Data<String> {
     }
 
     public NumericData toNumericData() {
-        return new NumericData(this.times, 0);
+    	NumericData nd = new NumericData(this.times, 0);
+        nd.put("op1", this.times);
+        nd.put("op2", 0);
+        return nd;
     }
 
     public StringData setTimes(int times) {
@@ -27,7 +30,7 @@ public class StringData extends Data<String> {
         if (this.times > 0) {
             String word = this.get("op1");
             String currentResult = this.get("result");
-            this.put("result", currentResult + word);
+            this.put("result", currentResult + (currentResult.isEmpty() ? "" : " ") + word);
             this.times--;
         }
         return this;
@@ -39,6 +42,6 @@ public class StringData extends Data<String> {
 
     @Override
     public String toString() {
-        return "word: " + this.get("op1") + ", times: " + times + ", result: " + this.get("result");
+    	return "word: " + this.get("op1") + ", times: " + times + ", result: " + this.get("result");
     }
 }
