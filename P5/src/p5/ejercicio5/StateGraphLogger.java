@@ -13,11 +13,21 @@ import java.util.function.Predicate;
 import p5.ejercicio1.Data;
 import p5.ejercicio1.Node;
 
+/**
+ * @author Claudia Cuevas Ruano
+ * @author Lucia Espinosa Murillo
+ * 
+ * Clase que decora a StateGraph
+ */
 public class StateGraphLogger<T extends Data<?>> extends Decorator<T> {
 	private String file;
 	private SimpleDateFormat dateFormat;
 
-	
+	/**
+	 * Constructor de la clase
+	 * @param sg 
+	 * @param file
+	 */
 	public StateGraphLogger(Graph<T> sg, String file) {
 		super(sg);
 		this.file = file; 
@@ -28,6 +38,10 @@ public class StateGraphLogger<T extends Data<?>> extends Decorator<T> {
 		return file;
 	}
 	
+	/**
+	 * Funcion que guarda el historial en un fichero
+	 * @param message
+	 */
 	private void logToFile(String message) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
             String timestamp = dateFormat.format(new Date());
@@ -38,6 +52,11 @@ public class StateGraphLogger<T extends Data<?>> extends Decorator<T> {
         }
     }
 
+	/**
+	 * Funcion que añade un  nodo a un grafo
+	 * @param name nombre del nodo
+	 * @param accion del nodo
+	 */
 	@Override
 	public Graph<T> addNode(String name, Consumer<T> action) {
 		return super.addNode(name, action);
@@ -48,16 +67,32 @@ public class StateGraphLogger<T extends Data<?>> extends Decorator<T> {
 		return super.setInitial(name);
 	}
 
+	/**
+	 * Funcion que relaciona dos nodos en un edge con una condicion. Para ello se añade a una lista del primer nodo
+	 * @param name_node1 
+	 * @param name_node2
+	 * @param action 
+	 * @return el StateGraph
+	 */
 	@Override
 	public Graph<T> addConditionalEdge(String node_name1, String node_name2, Predicate<T> action) {
 		return super.addConditionalEdge(node_name1, node_name2, action);
 	}
 
+	/**
+	 * Funcion que guarda el historial de un grafo
+	 * @return buffer con el historial
+	 */
 	@Override
 	public String history() {
 		return super.history();
 	}
 
+	/**
+	 * Funcion que ejecuta todos los nodos de un grafo
+	 * @param input grafo
+	 * @param debug
+	 */
 	@Override
 	public T run(T input, boolean debug) {
 		String message_debug = "";
