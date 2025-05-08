@@ -1,63 +1,109 @@
-package p5.ejercicio5;
+package p5.ejercicio4;
 
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
+import java.util.*;
 
 import p5.ejercicio1.Data;
 import p5.ejercicio1.Node;
+import p5.ejercicio1.StateGraph;
 
-public abstract class Decorator<T extends Data<?>> implements Graph<T> {
-	Graph<T> graph;
+/**
+ * @author Claudia Cuevas Ruano
+ * @author Lucia Espinosa Murillo
+ * 
+ * Clase que hereda de la clase StateGraph
+ * Crea un grafo the tipo Streaming
+ */
+public class StreamingStateGraph<T extends Data<?>> extends StateGraph<T>{
+	public List<T> history; 
 	
-	public Decorator(Graph<T> graph) {
-		this.graph = graph;
+	
+	/**
+	 * Constructor de la clase
+	 * @param name
+	 * @param action
+	 */
+	public StreamingStateGraph(String name, String action) {
+		super(name, action);
+		this.history = new ArrayList<T>();
 	}
 	
-	public Graph<T> getGraph() {
-		return this.graph; 
-	}
-	
-	public Graph<T> addNode(String name, Consumer<T> action){
-		return this.graph.addNode(name, action);
-	}
-	
-	public Graph<T> setInitial(String name){
-		return this.graph.setInitial(name);
-	}
-
-	public Graph<T> addConditionalEdge(String node_name1, String node_name2, Predicate<T> action){
-		return this.graph.addConditionalEdge(node_name1, node_name2, action);
-	}
-	
-	public String history() {
-		return this.graph.history();
-	}
-	
+	/**
+	 * Funcion que ejecuta todos los nodos de un grafo
+	 * @param input grafo
+	 * @param debug
+	 */
+	@Override
 	public T run(T input, boolean debug) {
-		T output = this.graph.run(input, debug);
-		return output;
+		String message_debug = "";
+		int step = 1;
+		String history = this.history().substring(0, this.history().length() - 1);
+		message_debug += "Step " + step +" (" + super.getName() + ") - input: " + history + input + "]\n";
+		Node<T> node = null; 
 		
+		if(super.getInitialNode() != null) {
+			super.getInitialNode().executeAction(input);
+			this.addHistory(input);
+			step++;
+			message_debug += "Step " + step +" (" + super.getName() + ") - "+ super.getInitialNode().getName() +" executed: " + this.history() + "\n";
+			node = super.getInitialNode();
+		}else {
+			node = super.getNodes().getFirst();
+		}
+		
+		while(node != super.getFinalNode() && node != null) {
+			List <Node <T>> nodes = new ArrayList<>(node.getEdges());
+			if(nodes.isEmpty()) {
+				break; 
+			}
+			if(node.getConditionalAction()!=null) {
+				if(node.getConditionalAction().test(input)) {
+					nodes.getFirst().executeAction(input);
+					this.addHistory(input);
+					step++;
+					message_debug += "Step " + step +" (" + super.getName() + ") - "+ nodes.getFirst().getName() +" executed: " + this.history() + "\n";
+				}
+				node = nodes.getFirst();
+			}else {
+				nodes.getFirst().executeAction(input);
+				this.addHistory(input);
+				step++;
+				message_debug += "Step " + step +" (" + super.getName() + ") - "+ nodes.getFirst().getName() +" executed: " + this.history() + "\n";
+				node = nodes.getFirst();
+			}
+		}
+		message_debug = message_debug.substring(0, message_debug.length() - 1);
+		if (debug == true) {
+			System.out.println(message_debug);
+		}
+		return input; 
 	}
-	
-	public Node<T> getInitialNode(){
-		return this.graph.getInitialNode();
+
+	/**
+	 * Funcion que devuelve el historial de un grafo
+	 * @return buffer con el historial
+	 */
+	public String history() {
+		String buffer = "[";
+		for(T t: this.history) {
+			buffer += t + ", ";
+		}
+		buffer = buffer.substring(0, buffer.length() - 1);
+		buffer += "]";
+		return buffer; 
 	}
-	
-	public Node<T> getFinalNode(){
-		return this.graph.getFinalNode();
+
+	public List<T> getHistory() {
+		if(this.history.isEmpty()) {
+			return null; 
+		}
+		return this.history;
 	}
-	
-	public String getName() {
-		return this.graph.getName(); 
+
+	/**
+	 * Funcion que almacena el historial de un grafo
+	 * @param input objeto a guardar
+	 */
+	public void addHistory(T input) {
+		this.history.add(input);
 	}
-	
-	public List<Node<T>> getNodes(){
-		return this.graph.getNodes(); 
-	}
-	
-	public String toString() {
-		return this.graph.toString();
-	}
-	
 }
