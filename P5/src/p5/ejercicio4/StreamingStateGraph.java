@@ -6,15 +6,32 @@ import p5.ejercicio1.Data;
 import p5.ejercicio1.Node;
 import p5.ejercicio1.StateGraph;
 
+/**
+ * @author Claudia Cuevas Ruano
+ * @author Lucia Espinosa Murillo
+ * 
+ * Clase que hereda de la clase StateGraph
+ * Crea un grafo the tipo Streaming
+ */
 public class StreamingStateGraph<T extends Data<?>> extends StateGraph<T>{
 	public List<T> history; 
 	
 	
+	/**
+	 * Constructor de la clase
+	 * @param name
+	 * @param action
+	 */
 	public StreamingStateGraph(String name, String action) {
 		super(name, action);
 		this.history = new ArrayList<T>();
 	}
 	
+	/**
+	 * Funcion que ejecuta todos los nodos de un grafo
+	 * @param input grafo
+	 * @param debug
+	 */
 	@Override
 	public T run(T input, boolean debug) {
 		String message_debug = "";
@@ -61,6 +78,10 @@ public class StreamingStateGraph<T extends Data<?>> extends StateGraph<T>{
 		return input; 
 	}
 
+	/**
+	 * Funcion que devuelve el historial de un grafo
+	 * @return buffer con el historial
+	 */
 	public String history() {
 		String buffer = "[";
 		for(T t: this.history) {
@@ -78,6 +99,10 @@ public class StreamingStateGraph<T extends Data<?>> extends StateGraph<T>{
 		return this.history;
 	}
 
+	/**
+	 * Funcion que almacena el historial de un grafo
+	 * @param input objeto a guardar
+	 */
 	public void addHistory(T input) {
 		this.history.add(input);
 	}
