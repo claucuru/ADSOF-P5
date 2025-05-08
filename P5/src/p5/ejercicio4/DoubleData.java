@@ -4,8 +4,20 @@ import java.text.DecimalFormat;
 
 import p5.ejercicio1.Data;
 
+/**
+ * @author Claudia Cuevas Ruano
+ * @author Lucia Espinosa Murillo
+ * 
+ * Clase que extiende de Data
+ * Guarda operadores de tipo double
+ */
 public class DoubleData extends Data<Double>{
 
+	/**
+	 * Constructo de la clase
+	 * @param d
+	 * param i
+	 */
 	public DoubleData(double d, double i) {
 		super(d, i);
 	}
