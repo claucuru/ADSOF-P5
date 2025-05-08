@@ -7,16 +7,31 @@ import java.util.function.*;
 import p5.ejercicio1.Data;
 import p5.ejercicio1.Node;
 
+/**
+ * @author Claudia Cuevas Ruano
+ * @author Lucia Espinosa Murillo
+ * 
+ * Clase que decora a StateGraphLogger
+ */
 public class StateGraphProfiler<T extends Data<?>> extends Decorator<T>{
 	private Decorator<T> sl;
 	public Map<Long, T> history;
-	
+
+	/**
+	 * Constructor de la clase
+	 * @param sl Decorador
+	 */
 	public StateGraphProfiler(Decorator<T> sl) {
 		super(sl.getGraph());
 		this.sl = sl; 
 		this.history = new LinkedHashMap<Long, T>();
 	}
 
+	/**
+	 * Funcion que añade un  nodo a un grafo
+	 * @param name nombre del nodo
+	 * @param accion del nodo
+	 */
 	@Override
 	public Graph<T> addNode(String name, Consumer<T> action) {
 		return sl.addNode(name, action);
@@ -27,11 +42,22 @@ public class StateGraphProfiler<T extends Data<?>> extends Decorator<T>{
 		return sl.setInitial(name);
 	}
 
+	/**
+	 * Funcion que relaciona dos nodos en un edge con una condicion. Para ello se añade a una lista del primer nodo
+	 * @param name_node1 
+	 * @param name_node2
+	 * @param action 
+	 * @return el StateGraph	
+	 */
 	@Override
 	public Graph<T> addConditionalEdge(String node_name1, String node_name2, Predicate<T> action) {
 		return sl.addConditionalEdge(node_name1, node_name2, action);
 	}
 
+	/**
+	 * Funcion que guarda el historial de un grafo
+	 * @return buffer con el historial
+	 */
 	@Override
 	public String history() {
 		String buffer = "[";
@@ -43,6 +69,11 @@ public class StateGraphProfiler<T extends Data<?>> extends Decorator<T>{
 		return buffer; 
 	}
 
+	/**
+	 * Funcion que ejecuta todos los nodos de un grafo
+	 * @param input grafo
+	 * @param debug
+	 */
 	@Override
 	public T run(T input, boolean debug) {
 		String message_debug = "";
